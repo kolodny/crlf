@@ -1,0 +1,25 @@
+{
+  "name": "crlf",
+  "version": "1.0.0",
+  "description": "detect and change newline endings",
+  "main": "index.js",
+  "bin": {
+    "crlf": "./bin/crlf"
+  },
+  "scripts": {
+    "test": "mocha",
+    "test-cov": "node --harmony ./node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- --reporter dot",
+    "test-travis": "node --harmony ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec"
+  },
+  "author": "Moshe Kolodny",
+  "license": "MIT",
+  "devDependencies": {
+    "coveralls": "^2.11.2",
+    "istanbul": "^0.3.13",
+    "mocha": "^2.2.4"
+  },
+  "dependencies": {
+    "glob": "^5.0.5",
+    "transform-file": "^1.0.1"
+  }
+}
