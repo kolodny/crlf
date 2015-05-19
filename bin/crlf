@@ -12,13 +12,13 @@ if (/^--set/.test(files[0])) {
   set = files.shift().split('=')[1];
 }
 
-var matchedFiles = glub.sync(files, {nodir: true});
+var matchedFiles = glub.sync(files, {nodir: true, nonull: true});
 
 if (!files.length) {
   console.log('usage: crlf [--set=<endingType>] <files>');
   console.log('  by default it will get the ending types, pass in --set to change');
   console.log('  endingType is one of LF, CR, CRLF');
-  return;
+  process.exit(2);
 }
 
 var ticks = matchedFiles.length;
@@ -26,7 +26,11 @@ var returnedLines = Array(ticks);
 
 matchedFiles.forEach(function(filename, fileIndex) {
   crlf[set ? 'set' : 'get'](filename, set, function(err, currentEndingType) {
-    returnedLines[fileIndex] = filename + ' ' + currentEndingType;
+    if (err) {
+      console.error('crlf: ' + err.message);
+      process.exit(1);
+    }
+    returnedLines[fileIndex] = currentEndingType + ' ' + filename;
     if (set) {
       returnedLines[fileIndex] += ' -> ' + set;
     }

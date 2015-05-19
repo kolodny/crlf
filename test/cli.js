@@ -19,7 +19,7 @@ describe('crlf', function() {
       fs.writeFileSync(fileLocation, lines.join('\n'));
       exec('node ' + __dirname + '/../bin/crlf ' + fileLocation, function(err, stdout) {
         stdout = stdout.trim();
-        assert(/file.txt LF$/.test(stdout));
+        assert(/^LF .*\/file.txt$/.test(stdout));
         done();
       });
     });
@@ -32,7 +32,9 @@ describe('crlf', function() {
       fs.writeFileSync(fileLocation, lines.join('\n'));
       exec('node ' + __dirname + '/../bin/crlf --set=CRLF ' + fileLocation, function(err, stdout) {
         var fileContents = fs.readFileSync(fileLocation).toString();
+        stdout = stdout.trim();
         assert.equal(fileContents, lines.join('\r\n'));
+        assert(/^LF .*\/file.txt -> CRLF$/.test(stdout));
         done();
       });
     });
