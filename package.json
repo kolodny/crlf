@@ -1,6 +1,6 @@
 {
   "name": "crlf",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "detect and change newline endings",
   "main": "index.js",
   "bin": {
@@ -19,7 +19,7 @@
     "mocha": "^2.2.4"
   },
   "dependencies": {
-    "glob": "^5.0.5",
+    "glub": "^1.0.0",
     "transform-file": "^1.0.1"
   }
 }

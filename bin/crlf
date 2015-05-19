@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 var path = require('path');
-var glob = require('glob');
+var glub = require('glub');
 var crlf = require('..');
 
 var files = process.argv.slice(2);
@@ -12,12 +12,7 @@ if (/^--set/.test(files[0])) {
   set = files.shift().split('=')[1];
 }
 
-if (files.length === 1) {
-  files = glob.sync(files[0], {nodir: true});
-}
-files = files.filter(function(file) {
-  return fs.statSync(file).isFile();
-});
+var matchedFiles = glub.sync(files, {nodir: true});
 
 if (!files.length) {
   console.log('usage: crlf [--set=<endingType>] <files>');
@@ -26,10 +21,10 @@ if (!files.length) {
   return;
 }
 
-var ticks = files.length;
+var ticks = matchedFiles.length;
 var returnedLines = Array(ticks);
 
-files.forEach(function(filename, fileIndex) {
+matchedFiles.forEach(function(filename, fileIndex) {
   crlf[set ? 'set' : 'get'](filename, set, function(err, currentEndingType) {
     returnedLines[fileIndex] = filename + ' ' + currentEndingType;
     if (set) {
