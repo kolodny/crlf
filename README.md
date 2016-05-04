@@ -10,8 +10,8 @@ Detect and change line endings
 
 #### Usage
 
-The cli is probably the one your looking for, first `npm install -g crlf`  
-usage is something like this:
+The cli is probably the one you're looking for, first `npm install -g crlf`.
+Usage is something like this:
 
 ```bash
 $ crlf index.js
