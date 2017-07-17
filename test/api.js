@@ -13,6 +13,12 @@ describe('crlf', function() {
   };
   beforeEach(cleanup);
   afterEach(cleanup);
+  var longLine = "";
+  var bufferLength = 1024 * 64; // fs.createReadStream buffer length
+  while (longLine.length < bufferLength) {
+    longLine += "LongLine";
+  }
+  longLine = longLine.substr(0, bufferLength - 1);
 
   describe('get()', function() {
     it('can check line ending settings for linux', function(done) {
@@ -43,6 +49,23 @@ describe('crlf', function() {
       fs.writeFileSync(fileLocation, lines.join('#'));
       crlf.get(fileLocation, null, function(err, ending) {
         assert.equal(ending, 'NA');
+        done();
+      });
+    });
+
+    it('can handle files where buffer ends between \\r and \\n of \\r\\n', function(done) {
+      var betweenLines = [longLine, longLine.substr(0, -1)].concat(lines); // this will cause two buffers ending between CR and LF in a row
+      fs.writeFileSync(fileLocation, betweenLines.join('\r\n'));
+      crlf.get(fileLocation, null, function(err, ending) {
+        assert.equal(ending, 'CRLF');
+        done();
+      });
+    });
+
+    it('can handle files where buffer ends between \\r and EOF', function(done) {
+      fs.writeFileSync(fileLocation, [longLine, ''].join('\r'));
+      crlf.get(fileLocation, null, function(err, ending) {
+        assert.equal(ending, 'CR');
         done();
       });
     });
