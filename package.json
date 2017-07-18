@@ -1,6 +1,6 @@
 {
   "name": "crlf",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "detect and change newline endings",
   "main": "index.js",
   "bin": {
